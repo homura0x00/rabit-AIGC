@@ -1,11 +1,11 @@
 <template>
     <el-card class="box-card">
         <template #header>
-            <span style="font-weight: bold; font-size: 15px;">--系统</span>
+            <span style="font-weight: bold; font-size: 15px;"> 医疗助理 </span>
         </template>
         <div id="dialog_container">
             <div v-for="oneDialog in text_dialog" :key="oneDialog">
-                <el-divider content-position="left">{{ user_name }} --{{ oneDialog.time }}</el-divider>
+                <el-divider content-position="left">{{ user_name }} -- {{ oneDialog.time }}</el-divider>
                 <span id="question_card" style="font-size: 15px">{{ oneDialog.question }}</span>
                 <el-divider content-position="right">回答</el-divider>
                 <span id="answer_card">
