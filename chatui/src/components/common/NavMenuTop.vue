@@ -14,10 +14,10 @@
 
         <!-- 中间的问答系统的标识 -->
         <span
-            style=" background-color: #252525; position: absolute; color: #fff; padding-top: 20px; right: 43%; font-size: 20px; font-weight: bold;"> 医疗助理 </span>
+            style=" background-color: #252525; position: absolute; color: #fff; padding-top: 20px; right: 43%; font-size: 20px; font-weight: bold"> 医疗助理 </span>
 
         <!-- 插入一个二级菜单栏，用户中心 -->
-        <el-sub-menu index="person" style="position: absolute; right: 11px; padding-top: 10px;">
+        <el-sub-menu index="person" style="position: absolute; right: 11px; padding-top: 10px">
             <template #title>
                 <el-avatar :size="40" :src="circleUrl"></el-avatar>
             </template>

@@ -6,12 +6,13 @@
 </template>
 
 <script>
-import NavMenuTop from "@/components/common/NavMenuTop.vue";
+import NavMenuTop from '@/components/common/NavMenuTop.vue';
 
 export default {
     name: "HomeView",
     commponents: { NavMenuTop },
-};
+    components: { NavMenuTop }
+}
 </script>
 <style>
 
@@ -28,6 +29,6 @@ html, body {
 
 .nav-menu {
 
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .05);
 }
 </style>
