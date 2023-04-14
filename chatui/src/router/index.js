@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import AnswerCard from "@/components/Answer/AnswerCard.vue";
+import AnswerCard from "@/components/Answer/AnswerCard";
 
 const routes = [
   {

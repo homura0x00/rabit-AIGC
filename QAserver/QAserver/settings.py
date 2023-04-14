@@ -37,11 +37,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'myapp',
+    'corsheaders',  # 跨域
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # corsheaders
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -68,7 +74,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'QAserver.wsgi.application'
-
+ASGI_APPLICATION = 'QAserver.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
@@ -121,3 +127,14 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 跨域，前后端
+CORS_ALLOWED_ORIGINS = [
+    "https://localhost:8080",
+]
+
+# 允许的请求
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+]

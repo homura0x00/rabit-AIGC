@@ -10,8 +10,7 @@ import NavMenuTop from '@/components/common/NavMenuTop.vue';
 
 export default {
     name: "HomeView",
-    commponents: { NavMenuTop },
-    components: { NavMenuTop }
+    components: { NavMenuTop },
 }
 </script>
 <style>
