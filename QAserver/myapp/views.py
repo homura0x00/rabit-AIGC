@@ -6,4 +6,5 @@ from rest_framework.response import Response
 
 @api_view(['GET'])
 def first_api(request):
+    
     return Response({'data': 'ok'})
