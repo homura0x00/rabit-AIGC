@@ -1,33 +1,30 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import HomeView2 from "../views/HomeView2.vue";
-import KGQACard from "@/components/KGQA/KGQACard";
-import AnswerCard from "@/components/KGQA/AnswerCard";
-import KnowledgeGraph from "@/components/KGQA/KnowledgeGraph";
+import KGCard from "@/components/KGQA/KGCard";
+import ChatCard from "@/components/KGQA/ChatCard";
 import UserCard from "@/components/UserCenter/UserCard";
+import LoginView from "@/views/LoginView";
 
 const routes = [
+  // 网站主页
   {
     path: "/",
     name: "home",
-    component: HomeView
-  },
-
-  {
-    path: "/KGQA",
-    name: "kgqahome",
-    component: HomeView2,
+    component: HomeView,
     children: [
       {
-        path: "/KGQA",
-        name: "KGQA_home",
-        component: KGQACard,
+        path: "/login",
+        name: 'Login',
+        component: LoginView,
         meta: {
           requireAuth: false,
         }
       }
     ]
   },
+
+// 知识图谱问答系统模块
   {
     path: "/KGQA",
     name: "knowlegdeGraph",
@@ -36,7 +33,7 @@ const routes = [
       {
         path: "/KGQA/kg",
         name: "KnowledgeGraph",
-        component: KnowledgeGraph,
+        component: KGCard,
         meta: {
           requireAuth: false,
         }
@@ -49,16 +46,16 @@ const routes = [
     component: HomeView2,
     children: [
       {
-        path: "/QA",
-        name: "AnswerCard",
-        component: AnswerCard,
+        path: "/KGQA/Chat",
+        name: "Chat",
+        component: ChatCard,
         meta: {
           requireAuth: false,
         }
       }
     ]
   },
-
+// 用户中心
   {
     path: "/KGQA/Personal",
     name: "UserCard",
@@ -72,3 +69,18 @@ const router = createRouter({
 });
 
 export default router;
+
+// router.beforeEach((to, from, next)=>{
+//   const isLogin = localStorage.getItem('is_login') == 'true';
+//   if( isLogin ){
+//     if( to.path !== '/' )
+//       next();
+//     else
+//       next('/');
+//   } else {
+//     if( to.path !== '/' )
+//       next('/login');
+//     else
+//       next();
+//   }
+// })

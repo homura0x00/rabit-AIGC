@@ -25,16 +25,16 @@
             <el-menu-item route="/KGQA/personal" index="personal">
                 个人信息
             </el-menu-item>
-            <el-menu-item @click="logout()" index="logout">
+            <el-menu-item route="/" @click="logout()" index="logout">
                 退出登录
             </el-menu-item>
         </el-sub-menu>
 
-        <el-menu-item route="/kg" index="KnowledgeGraph">
+        <el-menu-item route="/KGQA/KG" index="KnowledgeGraph">
             知识图谱
         </el-menu-item>
 
-        <el-menu-item route="/qa" index="AnswerCard">
+        <el-menu-item route="/KGQA/Chat" index="AnswerCard">
             医疗咨询
         </el-menu-item>
     </el-menu>
