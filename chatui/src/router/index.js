@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import HomeView2 from "../views/HomeView2.vue";
-import KGCard from "@/components/KGQA/KGCard";
+// import KGCard from "@/components/KGQA/KGCard";
 import ChatCard from "@/components/KGQA/ChatCard";
 import UserCard from "@/components/UserCenter/UserCard";
 import LoginView from "@/views/LoginView";
@@ -15,31 +15,31 @@ const routes = [
     children: [
       {
         path: "/login",
-        name: 'Login',
+        name: "Login",
         component: LoginView,
         meta: {
           requireAuth: false,
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
 
-// 知识图谱问答系统模块
-  {
-    path: "/KGQA",
-    name: "knowlegdeGraph",
-    component: HomeView2,
-    children: [
-      {
-        path: "/KGQA/kg",
-        name: "KnowledgeGraph",
-        component: KGCard,
-        meta: {
-          requireAuth: false,
-        }
-      }
-    ]
-  },
+  // 知识图谱问答系统模块
+  // {
+  //   path: "/KGQA",
+  //   name: "knowlegdeGraph",
+  //   component: HomeView2,
+  //   children: [
+  //     {
+  //       path: "/KGQA/kg",
+  //       name: "KnowledgeGraph",
+  //       component: KGCard,
+  //       meta: {
+  //         requireAuth: false,
+  //       }
+  //     }
+  //   ]
+  // },
   {
     path: "/KGQA",
     name: "AnswerCard",
@@ -51,11 +51,11 @@ const routes = [
         component: ChatCard,
         meta: {
           requireAuth: false,
-        }
-      }
-    ]
+        },
+      },
+    ],
   },
-// 用户中心
+  // 用户中心
   {
     path: "/KGQA/Personal",
     name: "UserCard",

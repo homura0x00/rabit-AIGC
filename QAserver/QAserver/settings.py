@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'myapp',
     'corsheaders',  # 跨域
     'rest_framework.authtoken',
+    'sslserver',
 ]
 
 MIDDLEWARE = [
@@ -131,7 +132,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 跨域，前后端
 CORS_ALLOWED_ORIGINS = [
-    "https://localhost:8080",
+    "http://localhost:8080",
 ]
 
 # 允许的请求
@@ -139,3 +140,11 @@ CORS_ALLOW_METHODS = [
     'GET',
     'POST',
 ]
+
+CORS_ALLOW_HEADERS = (
+    'content-type',
+)
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True

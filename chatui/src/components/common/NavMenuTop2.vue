@@ -30,9 +30,6 @@
             </el-menu-item>
         </el-sub-menu>
 
-        <el-menu-item route="/KGQA/KG" index="KnowledgeGraph">
-            知识图谱
-        </el-menu-item>
 
         <el-menu-item route="/KGQA/Chat" index="AnswerCard">
             医疗咨询
