@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-DATABASE = os.environ.get("SUPABASE_URL")
+DATABASE = os.environ.get("SUPABASE_PG_URL")
 if DATABASE:
     engine = create_engine(str(DATABASE))
     print(engine)

@@ -4,7 +4,7 @@ from app.core.log import logger
 from sqlmodel import Session, create_engine
 from sqlalchemy.exc import SQLAlchemyError
 
-from app.models.resume import Resume
+from app.models.condidate import Resume
 
 
 class DatabaseService:
