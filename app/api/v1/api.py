@@ -20,7 +20,7 @@ async def health_check():
     return {"status": "healthy", "version": "1.0.0"}
 
 
-@api_router.post("/upload/")
+@api_router.post("/resumes")
 async def create_upload_file(file: UploadFile):
     """临时存储文件，写入数据库后删除文件"""
     if not file:
