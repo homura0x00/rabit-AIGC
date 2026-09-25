@@ -5,8 +5,8 @@ from contextlib import asynccontextmanager
 
 from fastapi.responses import JSONResponse
 
-from core.log import logger
-from core.config import settings
+from app.core.log import logger
+from app.core.config import settings
 from app.services.database import database_service
 
 
@@ -16,7 +16,7 @@ async def lifespan(app: FastAPI):
     yield
 
     # Cleanup on shutdown
-    logger.info("")
+    logger.info("Shutdown successed.")
 
 app = FastAPI(
     title="",
@@ -25,6 +25,9 @@ app = FastAPI(
     openapi_url="",
     lifespan=lifespan,
 )
+
+async def root():
+    return 
 
 @app.get("/health")
 async def health_check():

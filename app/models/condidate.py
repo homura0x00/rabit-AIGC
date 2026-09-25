@@ -5,8 +5,6 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from app.models.base import BaseModel
 
-# TODO 优化AI提出的Model模板
-
 class Candidate(BaseModel, table=True):
     """Resume model for storing resume.
 
@@ -23,11 +21,9 @@ class Candidate(BaseModel, table=True):
     email: Optional[str] = Field(default=None, index=True, max_length=100)
     phone: Optional[str] = Field(default=None, max_length=30)
 
-
     educations: List["Education"] = Relationship(back_populates="candidate")
     experiences: List["Experience"] = Relationship(back_populates="candidate")
     projects: List["Project"] = Relationship(back_populates="candidate")
-
 
 class Education(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -38,9 +34,19 @@ class Education(SQLModel, table=True):
     degree: Optional[str] = Field(default=None, max_length=50)
     start_date: Optional[str] = Field(default=None, max_length=20)
     end_date: Optional[str] = Field(default=None, max_length=20)
-    description: Optional[str] = Field(default=None)
+    description: Optional[str] = Field(default=None)    # 可选：主修课程、获奖荣誉、担任职务
 
     candidate: Optional[Candidate] = Relationship(back_populates="educations")
+
+class Skill(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    candidate_id: int = Field(foreign_key="candidate.id", index=True)
+
+    name: str = Field(index=True, unique=True, max_length=50)
+    description: Optional[str] = Field(default=None)
+
+    candidate: Optional[Candidate] = Relationship(back_populates="skills")
+
 
 class Experience(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -53,14 +59,14 @@ class Experience(SQLModel, table=True):
     end_date: Optional[str] = Field(default=None, max_length=20)
     description: Optional[str] = Field(default=None)
 
-    candidate: Optional[Candidate] = Relationship(back_populates="works")
+    candidate: Optional[Candidate] = Relationship(back_populates="experiences")
 
 class Project(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     candidate_id: int = Field(foreign_key="candidate.id", index=True)
 
     name: str = Field(max_length=100)
-    title: Optional[str] = Field(default=None, max_length=100)  # 角色
+    role: Optional[str] = Field(default=None, max_length=100)  # 角色
     start_date: Optional[str] = Field(default=None, max_length=20)
     end_date: Optional[str] = Field(default=None, max_length=20)
     description: Optional[str] = Field(default=None)

@@ -5,3 +5,32 @@
 .idea
 
 tests/uploads/
+
+# 字节码/缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C 扩展
+*.so
+
+# 打包/分发文件
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# 测试/覆盖率报告
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 类型检查/代码检查缓存
+.mypy_cache/
+.ruff_cache/
+.dmypy.json
+
+# 虚拟环境
+.venv/
+venv/
+env/

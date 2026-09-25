@@ -2,7 +2,9 @@
 # Define environment types
 from enum import Enum
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class Environment(str, Enum):
     """Application environment types.
@@ -40,7 +42,9 @@ class Settings:
         self.ENVIRONMENT = get_environment()
 
         self.VERSION = "0.1.0"
-        self.DATABASE_URL = str(os.getenv("DATABASE_URL"))
+        self.DATABASE_URL = str(os.getenv("SUPABASE_URL"))
+        self.DEBUG = os.getenv("DEBUG", "false").lower() in ("true", "1", "t", "yes")
+
 
 
 settings = Settings()
