@@ -34,3 +34,13 @@ htmlcov/
 .venv/
 venv/
 env/
+
+# uv 包缓存（uv 默认缓存在 ~/.cache/uv；本仓库在沙箱内把 UV_CACHE_DIR 指到了工作区）
+.uv-cache/
+
+# 运行日志。之前被跟踪了，会不断产生无意义的 diff，也可能记录到不该入库的内容
+app.log
+*.log
+
+# 本地开发的 SQLite 库
+*.db

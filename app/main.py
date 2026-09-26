@@ -1,56 +1,80 @@
-from datetime import datetime
+"""FastAPI application entry point.
+
+Note what is deliberately absent: no tool-calling loop wraps the screening
+pipeline. Screening is a funnel — parse, filter, rank, judge — where each stage
+hands a strictly smaller set of candidates to the next, and a fixed sequence of
+transforms needs no model to sequence it. Driving it with a ReAct-style loop
+would resend the accumulated conversation on every step, which for a few hundred
+resumes is the fastest way to burn tokens available. The agent exists only for
+the HR follow-up interface, where the context is small and the interaction is
+genuinely conversational.
+"""
+
+from contextlib import asynccontextmanager
+from datetime import UTC, datetime
 
 from fastapi import FastAPI, status
-from contextlib import asynccontextmanager
-
 from fastapi.responses import JSONResponse
 
-from app.core.log import logger
+from app.api.v1 import api_router
 from app.core.config import settings
-from app.services.database import database_service
+from app.core.log import logger
+from app.services.database import health_check as db_health_check
+from app.services.database import init_db
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Handle application startup and shutdown events."""
+    """Prepare the schema before serving, and log the shutdown."""
+    init_db()
+    logger.info(
+        "startup env=%s version=%s llm=%s",
+        settings.ENVIRONMENT.value,
+        settings.VERSION,
+        settings.LLM.model,
+    )
     yield
+    logger.info("shutdown complete")
 
-    # Cleanup on shutdown
-    logger.info("Shutdown successed.")
 
 app = FastAPI(
-    title="",
+    title="Rabit AIGC — HR Resume Screening",
     version=settings.VERSION,
-    description="",
-    openapi_url="",
+    description=(
+        "Resume screening for a fixed candidate pool. The funnel is ordered so "
+        "the cheapest stage runs first: free parsing and regex filtering, then "
+        "embedding recall, then batched LLM judgement over a small shortlist. "
+        "Every provider call is recorded so the saving is measurable rather than "
+        "asserted."
+    ),
     lifespan=lifespan,
 )
 
-async def root():
-    return 
+app.include_router(api_router, prefix="/api/v1")
 
-@app.get("/health")
-async def health_check():
-    """Health check endpoint with environment-specific information.
+
+@app.get("/health", tags=["ops"], summary="Service health")
+async def health() -> JSONResponse:
+    """Report service health.
+
+    Returns 503 when the database is unreachable, so a load balancer drops the
+    instance rather than routing traffic into guaranteed failures.
 
     Returns:
-        JSONResponse: Health status payload, with HTTP 503 when the
-        database is unreachable so load balancers can drop the instance.
+        A JSON health payload with an appropriate status code.
     """
-    logger.info("health_check_called")
+    database_ok = db_health_check()
 
-    # Check database connectivity
-    db_healthy = await database_service.health_check()
-
-    response = {
-        "status": "healthy" if db_healthy else "degraded",
+    payload = {
+        "status": "healthy" if database_ok else "degraded",
         "version": settings.VERSION,
         "environment": settings.ENVIRONMENT.value,
-        "components": {"api": "healthy", "database": "healthy" if db_healthy else "unhealthy"},
-        "timestamp": datetime.now().isoformat(),
+        "components": {
+            "api": "healthy",
+            "database": "healthy" if database_ok else "unhealthy",
+        },
+        "timestamp": datetime.now(UTC).isoformat(),
     }
 
-    # If DB is unhealthy, set the appropriate status code
-    status_code = status.HTTP_200_OK if db_healthy else status.HTTP_503_SERVICE_UNAVAILABLE
-
-    return JSONResponse(content=response, status_code=status_code)
+    code = status.HTTP_200_OK if database_ok else status.HTTP_503_SERVICE_UNAVAILABLE
+    return JSONResponse(content=payload, status_code=code)

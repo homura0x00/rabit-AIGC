@@ -1,7 +1,7 @@
 [project]
 name = "rabit-aigc"
 version = "0.1.0"
-description = "Add your description here"
+description = "HR resume screening agent — a token-cost-optimised funnel over a fixed candidate pool"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -18,3 +18,43 @@ dependencies = [
     "pyyaml>=6.0.3",
     "sqlmodel>=0.0.45",
 ]
+
+[project.optional-dependencies]
+# Local cross-encoder reranking. Optional because it pulls in torch — roughly two
+# gigabytes — while the default configuration reranks over the provider API. Kept
+# as an extra so the default install stays small and the choice stays explicit.
+#   uv sync --extra rerank
+rerank = ["sentence-transformers>=3.0"]
+
+[dependency-groups]
+dev = ["pytest>=8.0"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    # PyMuPDF's SWIG bindings emit these three on import. Promoting
+    # DeprecationWarning to an error globally — `-W error::DeprecationWarning` —
+    # does not raise a catchable exception here: the warning is raised inside
+    # SWIG's C-extension import machinery and the interpreter segfaults, with a
+    # traceback that points at the `import pymupdf` line and looks like a bug in
+    # application code. It is not. These targeted ignores are the fix; a blanket
+    # `-W error` will crash the suite.
+    "ignore:builtin type Swig.*has no __module__ attribute:DeprecationWarning",
+    # Starlette emits this for the 422 constant FastAPI still references
+    # internally. Tracked upstream; suppressing it keeps genuine deprecations
+    # visible instead of forcing another blanket ignore.
+    "ignore::DeprecationWarning:starlette.*",
+]
+addopts = ["-q", "--strict-markers"]
+markers = [
+    "network: exercises a real provider. Excluded by default; run with -m network.",
+]
+
+[tool.pyright]
+# Point the checker at the project virtualenv. Without this it cannot resolve
+# fastapi/sqlmodel/pydantic and reports ~190 bogus "could not be resolved" errors,
+# which buries the handful of real ones.
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.13"
+include = ["app", "tests"]
