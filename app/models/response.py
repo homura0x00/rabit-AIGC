@@ -2,7 +2,6 @@ from typing import Generic, Optional, TypeVar
 
 from pydantic import BaseModel
 
-# TODO data是任意類型
 T = TypeVar("T")
 
 class ApiResponse(BaseModel, Generic[T]):
